@@ -27,26 +27,44 @@ class MyWidget extends StatefulWidget {
 // state class
 // We will replace this class in each of the examples below
 class _MyWidgetState extends State<MyWidget> {
-  bool _checkedValue = false;
-
   @override
   Widget build(BuildContext context) {
-    return CheckboxListTile(
-      //                   <--- CheckboxListTile
-      title: Text('this is my title'),
-      value: _checkedValue,
-      onChanged: (newValue) {
-        _doSomething(newValue);
+    return RaisedButton(
+      child: Text('Button'),
+      onPressed: () {
+        _showAlertDialog();
       },
-      // setting the controlAffinity to leading makes the checkbox come
-      // before the title instead of after it
-      controlAffinity: ListTileControlAffinity.leading,
     );
   }
 
-  void _doSomething(bool isChecked) {
-    setState(() {
-      _checkedValue = isChecked;
-    });
+  void _showAlertDialog() {
+    // set up the button
+    Widget okButton = FlatButton(
+      child: Text("OK"),
+      onPressed: () {
+        // This closes the dialog. `context` means the BuildContext, which is
+        // available by default inside of a State object. If you are working
+        // with an AlertDialog in a StatelessWidget, then you would need to
+        // pass a reference to the BuildContext.
+        Navigator.pop(context);
+      },
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Dialog title"),
+      content: Text("This is a Flutter AlertDialog."),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
