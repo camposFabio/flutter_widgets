@@ -27,10 +27,8 @@ class MyWidget extends StatefulWidget {
 // state class
 // We will replace this class in each of the examples below
 class _MyWidgetState extends State<MyWidget> {
-  // state variable
   String _textString = 'Hello world';
 
-  // The State class must include this method, which builds the widget
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,23 +37,19 @@ class _MyWidgetState extends State<MyWidget> {
           _textString,
           style: TextStyle(fontSize: 30),
         ),
-        RaisedButton(
-          //                         <--- Button
-          child: Text('Button'),
-          onPressed: () {
-            _doSomething();
+        TextField(
+          //                       <--- TextField
+          onChanged: (text) {
+            _doSomething(text);
           },
-        ),
+        )
       ],
     );
   }
 
-  // this private method is run whenever the button is pressed
-  void _doSomething() {
-    // Using the callback State.setState() is the only way to get the build
-    // method to rerun with the updated state value.
+  void _doSomething(String text) {
     setState(() {
-      _textString = 'Hello Flutter';
+      _textString = text;
     });
   }
 }
