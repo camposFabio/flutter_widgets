@@ -32,30 +32,40 @@ class _MyWidgetState extends State<MyWidget> {
     return RaisedButton(
       child: Text('Button'),
       onPressed: () {
-        _showAlertDialog();
+        _showAlertDialog(context);
       },
     );
   }
 
-  void _showAlertDialog() {
-    // set up the button
-    Widget okButton = FlatButton(
-      child: Text("OK"),
-      onPressed: () {
-        // This closes the dialog. `context` means the BuildContext, which is
-        // available by default inside of a State object. If you are working
-        // with an AlertDialog in a StatelessWidget, then you would need to
-        // pass a reference to the BuildContext.
-        Navigator.pop(context);
-      },
+  void _showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget remindButton = FlatButton(
+      child: Text("Remind me later"),
+      onPressed: () {},
     );
 
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {},
+    );
+
+    Widget launchButton = FlatButton(
+      child: Text("Launch missile"),
+      onPressed: () {
+        //onPressed: null, (Disable)
+        Navigator.of(context).pop(); // dismiss dialog
+        //launchMissile();
+      },
+    );
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
-      title: Text("Dialog title"),
-      content: Text("This is a Flutter AlertDialog."),
+      title: Text("Notice"),
+      content: Text(
+          "Launching this missile will destroy the entire universe. Is this what you intended to do?"),
       actions: [
-        okButton,
+        remindButton,
+        cancelButton,
+        launchButton,
       ],
     );
 
