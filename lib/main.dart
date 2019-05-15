@@ -1,98 +1,108 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-// entry point for the app,
-// the => operator is shorthand for {} when there is only one line of code
-void main() {
-  debugPaintSizeEnabled = true; //         <--- enable visual rendering
-  runApp(MyApp());
-}
+void main() => runApp(MyApp());
 
-// the root widget of our application
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'Flutter',
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Building layouts"),
+          title: Text('Flutter'),
         ),
-        body: myLayoutWidget(),
+        body: MyLayout(),
       ),
     );
   }
 }
 
-// replace this method with code in the examples below
-Widget myLayoutWidget() {
-  // wrap everything in a purple container
-  return Container(
-    margin: EdgeInsets.all(16),
-    padding: EdgeInsets.all(16),
-    decoration: BoxDecoration(
-      color: Colors.purple[900],
-      border: Border.all(),
-      borderRadius: BorderRadius.all(
-        Radius.circular(3.0),
+class MyLayout extends StatefulWidget {
+  @override
+  _MyLayoutState createState() => _MyLayoutState();
+}
+
+class _MyLayoutState extends State<MyLayout> {
+  Color _color = Colors.black;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            child: Text(
+              'Hello world',
+              style: TextStyle(
+                fontSize: 20,
+                color: _color,
+              ),
+            ),
+            onTap: () {
+              _mudaCor();
+            },
+          ),
+          RaisedButton(
+            child: Text('Show alert'),
+            onPressed: () {
+              _showAlertDialog(context);
+            },
+          ),
+        ],
       ),
-    ),
+    );
+  }
 
-    // column of three rows
-    child: Column(
-      // this makes the column height hug its content
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // first row
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(right: 8.0),
-              child: Icon(
-                Icons.favorite,
-                color: Colors.green,
-              ),
-            ),
-            Text(
-              'BEAMS',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            )
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: 16,
-            horizontal: 0,
-          ),
-          child: Text(
-            'Send programable push notifications to iOS and Android devices with delivery and open rate tracking built in.',
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-        ),
+  void _mudaCor() {
+    setState(() {
+      // have to import 'dart:math' in order to use Random()
+      int randomHexColor = Random().nextInt(0xFFFFFF);
+      int opaqueColor = 0xFF000000 + randomHexColor;
+      _color = Color(opaqueColor);
+    });
+  }
 
-        Row(
-          children: [
-            Text(
-              'EXPLORE BEAMS',
-              style: TextStyle(
-                color: Colors.green,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 8.0,
-              ),
-              child: Icon(
-                Icons.arrow_forward,
-                color: Colors.green,
-              ),
-            ),
-          ],
-        ),
+  void _showAlertDialog(BuildContext context) {
+    // set up the buttons
+    Widget remindButton = FlatButton(
+      child: Text("Remind me later"),
+      onPressed: () {},
+    );
+
+    Widget cancelButton = FlatButton(
+      child: Text("Cancel"),
+      onPressed: () {},
+    );
+
+    Widget launchButton = FlatButton(
+      child: Text("Launch missile"),
+      onPressed: null, //  () {
+      //Navigator.of(context).pop(); // dismiss dialog
+      //launchMissile();
+      //},
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Notice"),
+      content: Text(
+          "Launching this missile will destroy the entire universe. Is this what you intended to do?"),
+      actions: [
+        remindButton,
+        cancelButton,
+        launchButton,
       ],
-    ),
-  );
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 }
