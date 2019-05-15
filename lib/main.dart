@@ -1,9 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
+// boilerplate code
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,96 +12,50 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text('Flutter'),
         ),
-        body: MyLayout(),
+        body: MyWidget(),
       ),
     );
   }
 }
 
-class MyLayout extends StatefulWidget {
+// widget class
+class MyWidget extends StatefulWidget {
   @override
-  _MyLayoutState createState() => _MyLayoutState();
+  _MyWidgetState createState() => _MyWidgetState();
 }
 
-class _MyLayoutState extends State<MyLayout> {
-  Color _color = Colors.black;
+// state class
+// We will replace this class in each of the examples below
+class _MyWidgetState extends State<MyWidget> {
+  // state variable
+  String _textString = 'Hello world';
 
+  // The State class must include this method, which builds the widget
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: <Widget>[
-          GestureDetector(
-            child: Text(
-              'Hello world',
-              style: TextStyle(
-                fontSize: 20,
-                color: _color,
-              ),
-            ),
-            onTap: () {
-              _mudaCor();
-            },
-          ),
-          RaisedButton(
-            child: Text('Show alert'),
-            onPressed: () {
-              _showAlertDialog(context);
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _mudaCor() {
-    setState(() {
-      // have to import 'dart:math' in order to use Random()
-      int randomHexColor = Random().nextInt(0xFFFFFF);
-      int opaqueColor = 0xFF000000 + randomHexColor;
-      _color = Color(opaqueColor);
-    });
-  }
-
-  void _showAlertDialog(BuildContext context) {
-    // set up the buttons
-    Widget remindButton = FlatButton(
-      child: Text("Remind me later"),
-      onPressed: () {},
-    );
-
-    Widget cancelButton = FlatButton(
-      child: Text("Cancel"),
-      onPressed: () {},
-    );
-
-    Widget launchButton = FlatButton(
-      child: Text("Launch missile"),
-      onPressed: null, //  () {
-      //Navigator.of(context).pop(); // dismiss dialog
-      //launchMissile();
-      //},
-    );
-
-    // set up the AlertDialog
-    AlertDialog alert = AlertDialog(
-      title: Text("Notice"),
-      content: Text(
-          "Launching this missile will destroy the entire universe. Is this what you intended to do?"),
-      actions: [
-        remindButton,
-        cancelButton,
-        launchButton,
+    return Column(
+      children: [
+        Text(
+          _textString,
+          style: TextStyle(fontSize: 30),
+        ),
+        RaisedButton(
+          //                         <--- Button
+          child: Text('Button'),
+          onPressed: () {
+            _doSomething();
+          },
+        ),
       ],
     );
+  }
 
-    // show the dialog
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
+  // this private method is run whenever the button is pressed
+  void _doSomething() {
+    // Using the callback State.setState() is the only way to get the build
+    // method to rerun with the updated state value.
+    setState(() {
+      _textString = 'Hello Flutter';
+    });
   }
 }
