@@ -27,29 +27,26 @@ class MyWidget extends StatefulWidget {
 // state class
 // We will replace this class in each of the examples below
 class _MyWidgetState extends State<MyWidget> {
-  String _textString = 'Hello world';
+  bool _checkedValue = false;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          _textString,
-          style: TextStyle(fontSize: 30),
-        ),
-        TextField(
-          //                       <--- TextField
-          onChanged: (text) {
-            _doSomething(text);
-          },
-        )
-      ],
+    return CheckboxListTile(
+      //                   <--- CheckboxListTile
+      title: Text('this is my title'),
+      value: _checkedValue,
+      onChanged: (newValue) {
+        _doSomething(newValue);
+      },
+      // setting the controlAffinity to leading makes the checkbox come
+      // before the title instead of after it
+      controlAffinity: ListTileControlAffinity.leading,
     );
   }
 
-  void _doSomething(String text) {
+  void _doSomething(bool isChecked) {
     setState(() {
-      _textString = text;
+      _checkedValue = isChecked;
     });
   }
 }
